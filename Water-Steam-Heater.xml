@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>clock T=20.0;
+double h=0.0;
+urgent broadcast chan instantaneous ;</declaration>
+	<template>
+		<name x="5" y="5">Water</name>
+		<declaration>double k=0.2;
+
+int phase;</declaration>
+		<location id="id0" x="178" y="153">
+			<name x="204" y="144">Steam</name>
+			<label kind="invariant" x="168" y="170">T'==-k*T+h/2</label>
+			<label kind="comments" x="263" y="136">Rate of temperature T'
+is losses (-kT)
+plus a heating term (h/2)
+
+(not a real model of steam
+ just to diferentiate from liquid)</label>
+		</location>
+		<location id="id1" x="0" y="0">
+			<name x="-10" y="-34">Liquid</name>
+			<label kind="invariant" x="-110" y="-17">T'==-k*T + h</label>
+			<label kind="comments" x="-229" y="-76">Rate of temperature change (T')
+is losses (-kT) 
+plus a heating term</label>
+		</location>
+		<init ref="id1"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="guard" x="18" y="119">T&lt;100</label>
+			<label kind="synchronisation" x="18" y="136">instantaneous!</label>
+			<label kind="assignment" x="18" y="153">phase=0</label>
+			<label kind="comments" x="-110" y="102">Condenses.
+Steam-&gt;liquid
+phase transition</label>
+			<nail x="0" y="153"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="76" y="-34">T&gt;100</label>
+			<label kind="synchronisation" x="76" y="-17">instantaneous!</label>
+			<label kind="assignment" x="76" y="0">phase=1</label>
+			<label kind="comments" x="178" y="-51">Boils.
+Liquid-&gt;Steam
+phase transition</label>
+			<nail x="178" y="0"/>
+		</transition>
+	</template>
+	<template>
+		<name>Heater</name>
+		<location id="id2" x="-187" y="-68">
+			<name x="-170" y="-93">On</name>
+		</location>
+		<location id="id3" x="-331" y="-221">
+			<name x="-341" y="-255">Off</name>
+		</location>
+		<init ref="id3"/>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="guard" x="-313" y="-102">T&gt;=120</label>
+			<label kind="synchronisation" x="-313" y="-85">instantaneous!</label>
+			<label kind="assignment" x="-313" y="-68">h=0</label>
+			<label kind="comments" x="-484" y="-127">Turn the heating off
+when the temperature 
+rises above 120</label>
+			<nail x="-331" y="-68"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-280" y="-255">T&lt;=10</label>
+			<label kind="synchronisation" x="-280" y="-238">instantaneous!</label>
+			<label kind="assignment" x="-280" y="-221">h=50</label>
+			<label kind="comments" x="-178" y="-289">Turn the heating on
+when temperature falls
+below 10</label>
+			<nail x="-187" y="-221"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+water = Water();
+heater = Heater();
+// List one or more processes to be composed into a system.
+system water,heater;
+    </system>
+	<queries>
+		<query>
+			<formula>simulate 1 [&lt;=50] {T,h,water.phase}
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>

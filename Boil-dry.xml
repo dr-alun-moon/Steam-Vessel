@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>clock T=20.0;
+clock M=10.0;
+double f;
+double h;
+urgent broadcast chan instant;</declaration>
+	<template>
+		<name x="5" y="5">Water</name>
+		<declaration>double C_w = 4.1813;
+double Q_v = 2264.705;
+double H=1000.0;
+int phase=0;</declaration>
+		<location id="id0" x="93" y="93">
+			<name x="17" y="85">Explodes</name>
+			<label kind="invariant" x="83" y="110">T'==0 &amp;&amp; M'==0</label>
+		</location>
+		<location id="id1" x="93" y="-85">
+			<name x="110" y="-119">Boiling</name>
+			<label kind="invariant" x="119" y="-93">T'==0 &amp;&amp;
+M'==-H/Q_v</label>
+		</location>
+		<location id="id2" x="-221" y="-331">
+			<name x="-289" y="-357">Heating</name>
+			<label kind="invariant" x="-340" y="-314">T'==H/(C_w*M) &amp;&amp;
+M'==0</label>
+		</location>
+		<init ref="id2"/>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="102" y="-25">M&lt;=0</label>
+			<label kind="synchronisation" x="102" y="-8">instant!</label>
+			<label kind="assignment" x="102" y="8">phase=10</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="guard" x="0" y="-119">T&lt;100</label>
+			<label kind="synchronisation" x="0" y="-102">instant!</label>
+			<label kind="assignment" x="0" y="-85">phase=0</label>
+			<nail x="-221" y="-85"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-187" y="-365">T&gt;100</label>
+			<label kind="synchronisation" x="-187" y="-348">instant!</label>
+			<label kind="assignment" x="-187" y="-331">phase=1</label>
+			<nail x="93" y="-331"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+water = Water();
+// List one or more processes to be composed into a system.
+system water;
+    </system>
+	<queries>
+		<query>
+			<formula>simulate 1 [&lt;=30] {T,M,water.phase*10}
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>

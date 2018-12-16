@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>clock T=18.0;</declaration>
+	<template>
+		<name x="5" y="5">Water</name>
+		<declaration>double k=0.2;
+double h=10.0;
+urgent broadcast chan instantaneous ;</declaration>
+		<location id="id0" x="178" y="153">
+			<name x="204" y="144">Heating</name>
+			<label kind="invariant" x="168" y="170">T'==-k*T+h</label>
+			<label kind="comments" x="168" y="212">Rate is heat loss as in the Cooling
+Plus a constant term for the boiler</label>
+		</location>
+		<location id="id1" x="0" y="0">
+			<name x="-10" y="-34">Cooling</name>
+			<label kind="invariant" x="-76" y="-17">T'==-k*T</label>
+			<label kind="comments" x="-408" y="-68">Rate of temperature change is proportional to temperature.
+This models heat losses</label>
+		</location>
+		<init ref="id1"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="guard" x="68" y="119">T&gt;40</label>
+			<label kind="synchronisation" x="18" y="136">instantaneous!</label>
+			<nail x="0" y="153"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="110" y="-42">T&lt;20</label>
+			<label kind="synchronisation" x="18" y="-17">instantaneous!</label>
+			<label kind="comments" x="187" y="-25">Transition is not well defined
+for when it occurs.</label>
+			<nail x="178" y="0"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+water = Water();
+// List one or more processes to be composed into a system.
+system water;
+    </system>
+	<queries>
+		<query>
+			<formula>simulate 1 [&lt;=40] {T}
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>

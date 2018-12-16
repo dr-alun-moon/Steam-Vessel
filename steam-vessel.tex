@@ -1,0 +1,39 @@
+%&pdflatex
+\documentclass[12pt,a4paper]{article}
+\usepackage{siunitx}
+\usepackage{array}
+\usepackage{booktabs}
+\begin{document}
+\section{Some equations}
+\paragraph{Flow through opening} goes with square-root of the pressure
+\begin{equation}
+	q_m = \rho q_v = C A_2 \sqrt{2\rho(p_1-p_2)}
+\end{equation}
+Where $C$ is the flow coefficient, $A_2$ is the area of the opening, 
+and $p_1$ the pressure in the vessel with $p_2$ the external pressure.
+
+\begin{table}
+\begin{tabular}{l>{$}c<{$}Ss}
+	\toprule
+	latent heat of fusion & Q_m & 334 & \kilo\joule\per\kilogram\\
+	melting point & T_m & 0 & \degreeCelsius\\
+	latent heat of vaporization & Q_v & 2264.705 & \kilo\joule\per\kilogram\\
+	boiling point & T_v & 100 & \degreeCelsius\\
+	Heat Capacity at \SI{25}{\degreeCelsius} & C_{25} & 4.1813 & \joule\per\gram\per\kelvin\\
+	Heat capacity at \SI{100}{\degreeCelsius} (steam) && 2.080 & \joule\per\gram\per\kelvin\\
+	Desity of steam at \SI{100}{\degreeCelsius} and 1atm pressure && 0.6 & 
+		\kilogram\per\meter\cubed\\
+	\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Heat Capacity}
+\begin{equation}
+	\Delta T = \frac{\Delta H}{Cm}
+\end{equation}
+or for a mixture
+\begin{equation}
+	\Delta T = \frac{\Delta F}{C_1 m_1 + C_2 m_2}
+\end{equation}
+
+\end{document}

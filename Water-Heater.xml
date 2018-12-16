@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>clock T=20.0;
+double h=0.0;
+urgent broadcast chan instantaneous ;</declaration>
+	<template>
+		<name x="5" y="5">Water</name>
+		<declaration>double k=0.2;
+
+</declaration>
+		<location id="id0" x="0" y="0">
+			<name x="-10" y="-34">Liquid</name>
+			<label kind="invariant" x="-110" y="-17">T&lt;=100.0 &amp;&amp;
+T'==-k*T + h</label>
+			<label kind="comments" x="-408" y="-76">Rate of temperature change is proportional to temperature.
+This models heat losses.
+Plus a heating term</label>
+		</location>
+		<init ref="id0"/>
+	</template>
+	<template>
+		<name>Heater</name>
+		<location id="id1" x="-187" y="-68">
+			<name x="-170" y="-93">On</name>
+		</location>
+		<location id="id2" x="-331" y="-221">
+			<name x="-341" y="-255">Off</name>
+		</location>
+		<init ref="id2"/>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-313" y="-102">T&gt;=30</label>
+			<label kind="synchronisation" x="-313" y="-85">instantaneous!</label>
+			<label kind="assignment" x="-313" y="-68">h=0</label>
+			<label kind="comments" x="-476" y="-119">Turn the heating off
+when the temperature
+goes above 30</label>
+			<nail x="-331" y="-68"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-272" y="-255">T&lt;=10</label>
+			<label kind="synchronisation" x="-272" y="-238">instantaneous!</label>
+			<label kind="assignment" x="-272" y="-221">h=10</label>
+			<label kind="comments" x="-170" y="-255">Turn on the heating
+if the temperature falls
+below 10</label>
+			<nail x="-187" y="-221"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+water = Water();
+heater = Heater();
+// List one or more processes to be composed into a system.
+system water,heater;
+    </system>
+	<queries>
+		<query>
+			<formula>simulate 1 [&lt;=30] {T,h}
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>
