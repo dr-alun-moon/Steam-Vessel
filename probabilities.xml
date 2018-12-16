@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<template>
+		<name x="5" y="5">Template</name>
+		<declaration>clock t;
+</declaration>
+		<location id="id0" x="-620" y="-382">
+			<name x="-630" y="-416">Green</name>
+			<label kind="invariant" x="-630" y="-365">t&lt;=1</label>
+		</location>
+		<location id="id1" x="-637" y="-561">
+			<name x="-647" y="-595">Red</name>
+			<label kind="invariant" x="-647" y="-544">t&lt;=1</label>
+		</location>
+		<location id="id2" x="-833" y="-476">
+			<name x="-875" y="-493">Inital</name>
+			<urgent/>
+		</location>
+		<branchpoint id="id3" x="-705" y="-476">
+		</branchpoint>
+		<init ref="id2"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-722" y="-399">t&gt;=1</label>
+			<label kind="assignment" x="-713" y="-382">t=0</label>
+			<nail x="-731" y="-382"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-738" y="-595">t&gt;=1</label>
+			<label kind="assignment" x="-738" y="-561">t=0</label>
+			<nail x="-756" y="-561"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id0"/>
+			<label kind="probability" x="-671" y="-459">9</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id1"/>
+			<label kind="probability" x="-696" y="-518">1</label>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="assignment" x="-790" y="-476">t=0</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Process = Template();
+// List one or more processes to be composed into a system.
+system Process;
+    
+gantt {
+X:    Process.Red -&gt;0,
+    Process.Green-&gt;1;
+}</system>
+	<queries>
+		<query>
+			<formula>simulate 1 [&lt;=100] {Process.Red, Process.Green}
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>
