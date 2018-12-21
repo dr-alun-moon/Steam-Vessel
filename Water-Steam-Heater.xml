@@ -32,7 +32,6 @@ plus a heating term</label>
 			<target ref="id1"/>
 			<label kind="guard" x="18" y="119">T&lt;100</label>
 			<label kind="synchronisation" x="18" y="136">instantaneous!</label>
-			<label kind="assignment" x="18" y="153">phase=0</label>
 			<label kind="comments" x="-136" y="102">Condenses.
 Steam-&gt;liquid
 phase transition</label>
@@ -43,7 +42,6 @@ phase transition</label>
 			<target ref="id0"/>
 			<label kind="guard" x="76" y="-34">T&gt;100</label>
 			<label kind="synchronisation" x="76" y="-17">instantaneous!</label>
-			<label kind="assignment" x="76" y="0">phase=1</label>
 			<label kind="comments" x="187" y="-51">Boils.
 Liquid-&gt;Steam
 phase transition</label>
@@ -99,7 +97,7 @@ system water,heater;
     </system>
 	<queries>
 		<query>
-			<formula>simulate 10 [&lt;=50] {T,h,water.phase}
+			<formula>simulate 1 [&lt;=50] {T,h,water.Steam}
 			</formula>
 			<comment>
 			</comment>
